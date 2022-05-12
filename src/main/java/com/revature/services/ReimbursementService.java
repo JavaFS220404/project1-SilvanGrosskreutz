@@ -1,11 +1,18 @@
 package com.revature.services;
 
+import com.revature.exceptions.ReimbursementNotFoundException;
+import com.revature.exceptions.ResolverIsNullException;
+import com.revature.exceptions.UserIsNotFinanceManagerException;
 import com.revature.models.Reimbursement;
+import com.revature.models.Role;
 import com.revature.models.Status;
 import com.revature.models.User;
+import com.revature.repositories.ReimbursementDAO;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * The ReimbursementService should handle the submission, processing,
@@ -16,38 +23,107 @@ import java.util.List;
  *
  * Examples:
  * <ul>
- *     <li>Create Reimbursement</li>
- *     <li>Update Reimbursement</li>
- *     <li>Get Reimbursements by ID</li>
- *     <li>Get Reimbursements by Author</li>
- *     <li>Get Reimbursements by Resolver</li>
+ *     <li>Create Reimbursement</li> 			FINISHED
+ *     <li>Update Reimbursement</li>			FINISHED
+ *     <li>Get Reimbursements by ID</li>		FINISHED
+ *     <li>Get Reimbursements by Author</li>	FINISHED
+ *     <li>Get Reimbursements by Resolver</li> 	FINISHED
  *     <li>Get All Reimbursements</li>
  * </ul>
  */
 public class ReimbursementService {
+	
+	protected ReimbursementDAO reimDAO = new ReimbursementDAO();
+	
+	public Reimbursement createReimbursement(User author, double amount) {
+		Reimbursement reim = new Reimbursement(0, Status.PENDING, author, null, amount);
+		reimDAO.createReimbursement(reim);
+		return reim;
+	}
+	
+	public Reimbursement createReimbursement(Reimbursement reim) {
+		reim.setStatus(Status.PENDING);		
+		reimDAO.createReimbursement(reim);
+		return reim;	
+	}
 
     /**
      * <ul>
-     *     <li>Should ensure that the user is logged in as a Finance Manager</li>
-     *     <li>Must throw exception if user is not logged in as a Finance Manager</li>
-     *     <li>Should ensure that the reimbursement request exists</li>
-     *     <li>Must throw exception if the reimbursement request is not found</li>
-     *     <li>Should persist the updated reimbursement status with resolver information</li>
-     *     <li>Must throw exception if persistence is unsuccessful</li>
+     *     <li>Should ensure that the user is logged in as a Finance Manager</li>		FINISHED
+     *     <li>Must throw exception if user is not logged in as a Finance Manager</li>	FINISHED
+     *     <li>Should ensure that the reimbursement request exists</li>					FINISHED
+     *     <li>Must throw exception if the reimbursement request is not found</li>		FINISHED
+     *     <li>Should persist the updated reimbursement status with resolver information</li> FINISHED
+     *     <li>Must throw exception if persistence is unsuccessful</li>						
      * </ul>
      *
      * Note: unprocessedReimbursement will have a status of PENDING, a non-zero ID and amount, and a non-null Author.
      * The Resolver should be null. Additional fields may be null.
      * After processing, the reimbursement will have its status changed to either APPROVED or DENIED.
+     * 
      */
-    public Reimbursement process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
-        return null;
+    public Reimbursement process(Reimbursement unprocessedReimbursement,
+    		Status finalStatus, User resolver){
+    	
+    	if(!resolver.getRole().equals(Role.FINANCE_MANAGER)){
+    		throw new UserIsNotFinanceManagerException("User not logged in as Finance Manager!");
+    	}
+    	
+    	if(reimDAO.getById(unprocessedReimbursement.getId()).equals(null)) {
+    		throw new ReimbursementNotFoundException("Reimbursement request not in the list.");
+    	}
+    	
+    	unprocessedReimbursement.setResolver(resolver);
+    	unprocessedReimbursement.setStatus(finalStatus);
+    	
+    	if(!reimDAO.update(unprocessedReimbursement).equals(null)) {
+    		return unprocessedReimbursement;
+    	} 
+    	
+    	return null;   
+    }
+    
+    public Reimbursement getReimbursementById(int id){
+    	if(id <= 0) {
+    		System.out.println("Input ID should be non-zero and positive.");
+    		return null;
+    	}
+    	Reimbursement reim = reimDAO.getById(id).get();
+    	return reim;
+    }
+    
+    public List<Reimbursement> getReimbursementByAuthor(User author){
+    	if(author.equals(null)) {
+    		System.out.println("The Author you are searching for should be not null.");
+    		return null;
+    	}
+    	List<Reimbursement> reim = reimDAO.getByAuthor(author);
+    	return reim;
+    }
+    
+    public List<Reimbursement> getReimbursementByResolver(User resolver){
+    	if(resolver.equals(null)) {
+    		System.out.println("The Resolver you are searching for should be not null.");
+    		return null;
+    	}
+    	List<Reimbursement> reim = reimDAO.getByResolver(resolver);
+    	return reim;
     }
 
     /**
      * Should retrieve all reimbursements with the correct status.
      */
     public List<Reimbursement> getReimbursementsByStatus(Status status) {
-        return Collections.emptyList();
+    	List<Reimbursement> list = reimDAO.getByStatus(status);
+        return list;
     }
+    
+    public List<Reimbursement> getAllReimbursements(){
+    	List<Reimbursement> list = reimDAO.getAllReimbursements();
+    	return list;
+    }
+
+	
+
+
 }

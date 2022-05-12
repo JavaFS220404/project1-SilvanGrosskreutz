@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body style="background-color: rgba(0, 0, 0, 0.593)">
+    <div style="text-align: center;">
+        <h3 style="text-decoration: underline";>Login</h3>
+        <form action="login" method="post">
+            <table class="table table-dark">
+                <tr>
+                    <td><input type="text" name="userId" required
+                        placeholder="ENTER USERNAME"></td>
+                </tr>
+                <tr>
+                    <td><input type="password" name="password" required
+                        placeholder="ENTER PASSWORD"></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="login"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <br>
+    <br>
+    <div style="text-align: center;">
+        <h2>Registration as a Employee:</h2>
+        <form>
+            <label for="userName">Username:</label>
+            <input type="text" name="userName" id="userName" required>
+            <br>
+            <label for="userPassword">Password:</label>
+            <input type="password" name="userPassword" id="userPassword" required>
+            <br>
+            <label for="firstname">First Name</label>
+            <input type="text" name="firstname" id="firstname">
+            <br>
+            <label for="lastname">Last Name</label>
+            <input type="text" name="lastname" id="lastname">
+            <br>
+            <label for="eMail">E-Mail Address</label>
+            <input type="text" name="eMail" id="eMail">
+            <br>
+            <label for="phoneNumber">Phonenumber</label>
+            <input type="text" name="phoneNumber" id="phoneNumber">
+            <br>
+            <button id="userBtn">Register as a new User</button>
+        </form>
+        
+    </div>
+    <br>
+    <br>
+    <div style="text-align: center;">
+        <h2>Registration as a Finance Manager:</h2>
+        <form>
+            <label for="userName1">What is your Username?</label>
+            <input type="text" name="userName1" id="userName1" required>
+            <br>
+            <label for="userPassword1">Choose your password</label>
+            <input type="password" name="userPassword1" id="userPassword1" required>
+            <br>
+            <label for="firstname1">First Name</label>
+            <input type="text" name="firstname1" id="firstname1">
+            <br>
+            <label for="lastname1">Last Name</label>
+            <input type="text" name="lastname1" id="lastname1">
+            <br>
+            <label for="eMail1">E-Mail Address</label>
+            <input type="text" name="eMail1" id="eMail1">
+            <br>
+            <label for="phoneNumber1">Phonenumber</label>
+            <input type="text" name="phoneNumber1" id="phoneNumber1">
+            <br>
+            <button id="fmBtn">Register as a new Finance Manager</button>
+        </form>
+        
+    </div>
+    <br>
+    <br>
+    <br>
+    <div style="text-align: center;">
+        <table class="table table-dark striped">
+            <thead>
+                <tr>
+                    <th class="col-sm-1">User ID</th>
+                    <th class="col-sm-2">User Name</th>
+                    <th class="col-sm-2">User Password</th>
+                    <th class="col-sm-1">User Role</th>
+                    <th class="col-sm-1">First Name</th>
+                    <th class="col-sm-1">Last Name</th>
+                    <th class="col-sm-2">E-Mail</th>
+                    <th class="col-sm-2">Phonenumber</th>
+                </tr>
+            </thead>
+            <tbody id="userBody">
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <button id="getUsers">Click here to Show all Users</button>
+    </div>
+    <br><br><br>
+    
+    <script src="Users.js"></script>    
+</body>
+</html>

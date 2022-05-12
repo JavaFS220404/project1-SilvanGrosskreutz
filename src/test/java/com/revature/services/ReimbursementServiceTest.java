@@ -11,6 +11,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.revature.exceptions.ReimbursementNotFoundException;
+import com.revature.exceptions.ResolverIsNullException;
+import com.revature.exceptions.UserIsNotFinanceManagerException;
 import com.revature.models.Reimbursement;
 import com.revature.models.Role;
 import com.revature.models.Status;
@@ -50,9 +53,10 @@ public class ReimbursementServiceTest {
 	}
 	
 	@Test
-	public void testProcessPassesWhenUserIsFinanceManagerAndReimbursementExistsAndUpdateSuccessful() {
+	public void testProcessPassesWhenUserIsFinanceManagerAndReimbursementExistsAndUpdateSuccessful() throws Exception {
 		when(reimbursementDAO.getById(anyInt())).thenReturn(Optional.of(GENERIC_REIMBURSEMENT_1));
 		when(reimbursementDAO.update(any())).thenReturn(GENERIC_REIMBURSEMENT_2);
+		
 		
 		assertEquals(GENERIC_REIMBURSEMENT_2, reimbursementService.process(REIMBURSEMENT_TO_PROCESS, Status.APPROVED, GENERIC_FINANCE_MANAGER_1));
 		
